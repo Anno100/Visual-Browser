@@ -118,7 +118,7 @@ function Main(){
         Graph.g.fillLine(time*zoom,oldR*zoom*zoomY,(time+1)*zoom,R*zoom*zoomY);
         Graph.g.setStrokeStyle('red');
         Graph.g.fillLine(time*zoom,oldB*zoom*zoomY,(time+1)*zoom,B*zoom*zoomY);
-        time+=1;
+        time+=0.01;
         }
 
 
@@ -132,4 +132,3 @@ function Main(){
 
 }
 
-Main();

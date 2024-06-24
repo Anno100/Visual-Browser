@@ -1,0 +1,20 @@
+body{
+    margin-top: 20%;
+    background-color: gray;
+}
+button{
+    background-color: black;
+    color: white;
+    width: 200px;
+    transition: 0.5s;
+}
+
+button:hover{
+    background-color: white;
+    color: black;
+    transition: 0.5s;
+}
+
+form{
+    text-align: center;
+}
