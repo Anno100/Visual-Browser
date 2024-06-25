@@ -1,21 +1,21 @@
 
 
- 
+
 /******************************************************************* */
 console.log("Start Main...");
 
 
-function dB(B,R,rep_B,sterb_B){
-    return B * (rep_B - sterb_B*R);
+function dB(B, R, rep_B, sterb_B) {
+    return B * (rep_B - sterb_B * R);
 }
 
-function dR(R,B,sterb_R,rep_R){
-    return -R * (sterb_R - rep_R*B);
+function dR(R, B, sterb_R, rep_R) {
+    return -R * (sterb_R - rep_R * B);
 }
 
-function Main(){
-    Graph = createCanvas("Graph",1000,100);
-    Game = createCanvas("Game",500,500);
+function Main() {
+    Graph = createCanvas("Graph", 1000, 100);
+    Game = createCanvas("Game", 500, 500);
     let g = Game.g;
 
     const Beute = document.getElementById('Beute');
@@ -25,21 +25,21 @@ function Main(){
     const Hoehe = document.getElementById('Höhe');
     Breite.value = Game.width;
     Hoehe.value = Game.height;
-    
+
     const Rep_B = document.getElementById('rep_B');
     const Rep_R = document.getElementById('rep_R');
     const Sterb_B = document.getElementById('sterb_B');
     const Sterb_R = document.getElementById('sterb_R');
 
-    
+
     R = 0;
     B = 0;
     rep_B = 0;
     sterb_B = 0;
-    sterb_R =0;
-    rep_R =0;
+    sterb_R = 0;
+    rep_R = 0;
 
-    
+
     Raeuber.onchange = () => {
         Refresh.click();
     }
@@ -50,9 +50,9 @@ function Main(){
     Refresh.onclick = () => {
         g.clear();
         run = true;
-        time=0;
+        time = 0;
         Graph.g.clear();
-        Game.resize(Number(Breite.value),Number(Hoehe.value));
+        Game.resize(Number(Breite.value), Number(Hoehe.value));
         init();
     }
 
@@ -73,52 +73,52 @@ function Main(){
         B = Number(Beute.value);
         rep_B = Rep_B.value;
         sterb_B = Sterb_B.value;
-        sterb_R =Sterb_R.value;
-        rep_R =Rep_R.value;
+        sterb_R = Sterb_R.value;
+        rep_R = Rep_R.value;
 
     }
 
-    let from = new Rect(B,R,2,2);
-    
+    let from = new Rect(B, R, 2, 2);
 
-    let to = new Rect(B,R,2,2);
+
+    let to = new Rect(B, R, 2, 2);
 
     time = 0;
-    Graph.g.translate(-Graph.width/2,0);
+    Graph.g.translate(-Graph.width / 2, 0);
     S = Math.sin(time);
     Refresh.click();
     run = true;
     Game.Draw = () => {
 
         console.log(`${time}: Räuber:${R} Beute:${B}`)
-        if(Math.abs(R) == Infinity){
+        if (Math.max(Math.abs(R),Math.abs(B)) == Infinity) {
             run = false;
         }
 
-        if(run){
-        g.setStrokeStyle('black');
-        g.fillLine(0,-Game.width,0,Game.width);
-        g.fillLine(-Game.height,0,Game.height,0);
+        if (run) {
+            g.setStrokeStyle('black');
+            g.fillLine(0, -Game.width, 0, Game.width);
+            g.fillLine(-Game.height, 0, Game.height, 0);
 
-        g.setStrokeStyle('red');
-        from = to;
+            g.setStrokeStyle('red');
+            from = to;
 
-        let oldB = B;
-        let oldR = R;
-        let oldS = S;
+            let oldB = B;
+            let oldR = R;
+            let oldS = S;
 
-        B += dB(oldB,oldR,rep_B,sterb_B);
-        R += dR(oldR,oldB,sterb_R,rep_R);
-        S = Math.sin(time+1);
-        to = new Rect(B,R,2,2);
-        from.drawTo(g,to);
+            B += dB(oldB, oldR, rep_B, sterb_B);
+            R += dR(oldR, oldB, sterb_R, rep_R);
+            S = Math.sin(time + 1);
+            to = new Rect(B, R, 2, 2);
+            from.drawTo(g, to);
 
-        
-        Graph.g.setStrokeStyle('black');
-        Graph.g.fillLine(time*zoom,oldR*zoom*zoomY,(time+1)*zoom,R*zoom*zoomY);
-        Graph.g.setStrokeStyle('red');
-        Graph.g.fillLine(time*zoom,oldB*zoom*zoomY,(time+1)*zoom,B*zoom*zoomY);
-        time+=0.01;
+
+            Graph.g.setStrokeStyle('black');
+            Graph.g.fillLine(time * zoom, oldR * zoom * zoomY, (time + 1) * zoom, R * zoom * zoomY);
+            Graph.g.setStrokeStyle('red');
+            Graph.g.fillLine(time * zoom, oldB * zoom * zoomY, (time + 1) * zoom, B * zoom * zoomY);
+            time += 0.01;
         }
 
 
