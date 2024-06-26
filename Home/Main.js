@@ -4,19 +4,24 @@ function Main(){
     let c = createCanvas("Testing",500,500);
     let g = c.g;
     let Mouse = c.Mouse;
-    let v = new Circle(0,0,100,'black');
-    let w = new Circle(20,20,100,'black');
+    let v = new Vector2D(100,100,'orange');
+    let w = new Circle(20,20,50,'blue');
     
-    console.log(v)
     c.Draw = () => {
-        g.clear();
+
+
+        w.x = Mouse.x;
+        w.y = Mouse.y;
+        
+        if(v.overlap(w)) console.log("Yes");
+        console.log(w)
+
+        g.setFillStyle("black");
+        g.fillRect(0,0,c.width,c.height);
         v.draw(g);
         w.draw(g);
 
-        w.x = Mouse.x/2;
-        w.y = Mouse.y/2;
-        
+        g.setStrokeStyle('blue');
         v.drawTo(g,w);
-        if(v.overlap(w)) console.log("Yes");
     }
 }
