@@ -14,8 +14,8 @@ function dR(R, B, sterb_R, rep_R) {
 }
 
 function Main() {
-    Graph = createCanvas("Graph", 1000, 100);
-    Game = createCanvas("Game", 500, 500);
+    Graph = createCanvas(1000, 300);
+    Game = createCanvas(500, 500);
     let g = Game.g;
 
     const Beute = document.getElementById('Beute');
@@ -84,7 +84,7 @@ function Main() {
     let to = new Rect(B, R, 2, 2);
 
     time = 0;
-    Graph.g.translate(-Graph.width / 2, 0);
+    Graph.g.translate(0, 100);
     S = Math.sin(time);
     Refresh.click();
     run = true;
