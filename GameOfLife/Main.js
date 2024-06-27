@@ -2,7 +2,7 @@
 
 function Main(){
 
-    const canvas = createCanvas("asd",500,500);
+    const canvas = createCanvas(500,500);
     const g = canvas.g;
 
     let Zellen = [];
