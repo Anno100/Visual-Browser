@@ -113,7 +113,7 @@ function Main() {
         gameObjects.forEach((e) => {
             if(!add.checked){
                 if(canvas.Mouse.overlap(e)){
-                    if(canvas.Mouse.down) gameObjects = gameObjects.filter((ee) => e != ee );
+                    if(canvas.Mouse.down || true) gameObjects = gameObjects.filter((ee) => e != ee );
                 }
             }
             e.draw()
