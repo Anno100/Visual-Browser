@@ -109,6 +109,5 @@ function Main() {
 
     }
 
-    document.body.innerHTML = "asfoihad"
 
 }
