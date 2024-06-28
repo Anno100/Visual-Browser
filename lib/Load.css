@@ -14,10 +14,21 @@ button:hover{
     transition: 0.5s;
 }
 
-form,div{
-    text-align: center;
+input{
+    width: 50px;
 }
+
 
 canvas{
     background-color: white;
+}
+
+.Left,.Center,.Right{
+    border:solid;
+    
+}
+
+.Editor{
+    display: flex;
+
 }
