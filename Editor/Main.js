@@ -6,11 +6,11 @@ function Main() {
 
     
     //CHOOSE OBJECT
-    c_rect = createInput('Rectangle', 'checkbox');
+    let c_rect = createInput('Rectangle', 'checkbox');
     c_rect.className = "choose";
-    c_circle = createInput('Circle', 'checkbox');
+    let c_circle = createInput('Circle', 'checkbox');
     c_circle.className = "choose";
-    c_vector = createInput('Vector', 'checkbox');
+    let c_vector = createInput('Vector', 'checkbox');
     c_vector.className = "choose";
 
     let left = document.createElement('div');
