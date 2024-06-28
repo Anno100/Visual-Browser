@@ -10,12 +10,10 @@ function Main() {
     c_rect.className = "choose";
     let c_circle = createInput('Circle', 'checkbox');
     c_circle.className = "choose";
-    let c_vector = createInput('Vector', 'checkbox');
-    c_vector.className = "choose";
 
     let left = document.createElement('div');
     left.className = 'Left'
-    left.append(c_rect.parentNode,c_circle.parentNode,c_vector.parentNode);
+    left.append(c_rect.parentNode,c_circle.parentNode);
     
     //CANVAS
     let canvas = createCanvas(500, 500);
@@ -85,14 +83,6 @@ function Main() {
         color.parentNode.hidden = false;
         radius.parentNode.hidden = false;
     }
-    c_vector.onclick = () => {
-        Array.from(document.getElementsByClassName('choose')).forEach(e => e.checked = false);
-        c_vector.checked = true;
-        width.parentNode.hidden = true;
-        height.parentNode.hidden = true;
-        color.parentNode.hidden = false;
-        radius.parentNode.hidden = true;
-    }
 
     canvas.c.onclick = () => {
         if(add.checked){
@@ -101,9 +91,6 @@ function Main() {
             }
             else if (c_circle.checked) { 
                 gameObjects.push(new Circle(canvas.Mouse.x, canvas.Mouse.y, radius.value, color.value)); 
-            }
-            else if (c_vector.checked) { 
-                gameObjects.push(new Vector2D(canvas.Mouse.x, canvas.Mouse.y,color.value)); 
             }
 
         }
