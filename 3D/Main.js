@@ -10,6 +10,7 @@ function Main() {
     canvas.showSystem = true;
     let g = canvas.g;
     let c = canvas.c;
+    let center = canvas.center;
     c.id = "SBS";
 
     let Mouse = canvas.Mouse;
@@ -25,10 +26,10 @@ function Main() {
 
     c.addEventListener("mousemove", (e) => {
 
-        if (e.offsetX > c.width / 2) console.log("rechts")
-        if (e.offsetX < c.width / 2) console.log("links")
-        if (e.offsetY > c.height / 2) console.log("unten")
-        if (e.offsetY < c.height / 2) console.log("oben")
+        if (e.offsetX > c.width / 2) center.x--;
+        if (e.offsetX < c.width / 2) center.x++;
+        if (e.offsetY > c.height / 2) center.y--;
+        if (e.offsetY > c.height / 2) center.y++;
     }
     )
 
