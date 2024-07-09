@@ -255,32 +255,39 @@ function Main() {
     let INTERVAL = null;
 
     gen.onclick = () => {
+        
+        /**
+         * Graph und Trajektor-Voreinstellungen
+         */
+        graph.showSystem = true;
+        graph.c.width = Number(input.graph_breite.value);
+        graph.c.height = Number(input.graph_hoehe.value);
+        graph.center.x = 10;
+        graph.center.y = graph.c.height-10;
+        graph_Zoom.x = Number(input.graph_zoomX.value);
+        graph_Zoom.y = Number(input.graph_zoomY.value);
+
+        traj.showSystem = true;
+        traj.c.width = Number(input.traj_breite.value);
+        traj.c.height = Number(input.traj_hoehe.value);
+        traj.center.x = 10;
+        traj.center.y = traj.c.height-10;
+        traj_Zoom.x = Number(input.traj_zoomX.value);
+        traj_Zoom.y = Number(input.traj_zoomY.value);
+
         const Raeuber_0 = new Raeuber(Number(input.x.value),Number(input.Zx.value),Number(input.Ax.value));
         const Beute_0 = new Beute(Number(input.y.value),Number(input.Zy.value),Number(input.Ay.value));
-
-        graph.showSystem = true;
-        traj.showSystem = true;
-    
         let beziehung = new Beziehung_Raeuber_Beute(Raeuber_0,Beute_0);
         beziehung.step = Number(input.step.value);
     
         
+        /**
+         * 
+         */
         let sum_Raeuber = 0;
         let sum_Beute = 0;
-        traj.c.width = Number(input.traj_breite.value);
-        traj.c.height = Number(input.traj_hoehe.value);
-        graph.c.width = Number(input.graph_breite.value);
-        graph.c.height = Number(input.graph_hoehe.value);
         
-        traj.center.x = 10;
-        traj.center.y = traj.c.height-10;
-        graph.center.x = 10;
-        graph.center.y = graph.c.height-10;
 
-        graph_Zoom.x = Number(input.graph_zoomX.value);
-        graph_Zoom.y = Number(input.graph_zoomY.value);
-        traj_Zoom.x = Number(input.traj_zoomX.value);
-        traj_Zoom.y = Number(input.traj_zoomY.value);
     
         INTERVAL = setInterval(()=>{
             beziehung.tick();
