@@ -25,11 +25,16 @@ function Main() {
 
     //Inputfelder arangieren***************************************************************
 
+    //Samples
+    let wolf_antilop = document.createElement("button")
+    wolf_antilop.innerHTML = "Sample1"
+    document.body.appendChild(wolf_antilop)
+
     /** Anzahl der Räuber bei t = 0
      * @param {number} min 0
      * @param {number} max 500
      */
-    let x = createRangeInput("Zahl der Räuber [x]", 0, 10000000, 1);
+    let x = createInput("Zahl der Räuber [x]", 0, 10000000, 1);
     x.onchange = () => onchange(x, `Zahl der Räuber [x = ${x.value}]`)
 
     /**Anzahl der Beute bei t = 0
@@ -72,12 +77,35 @@ function Main() {
     let Ay = createRangeInput("Sterberate der Beute [Ay]", 0, 10, 0.1);
     Ay.onchange = () => onchange(Ay, `Sterberate der Beute [Ay = ${Ay.value}]`)
 
+    let tx=0,tZx=0,tAx=0,ty=0,tZy=0,tAy=0;
+
+    const set = (px,py,pZx,pZy,pAx,pAy) => {
+        x.value = px;
+        Zx.value = pZx;
+        Ax.value = pAx;
+        y.value = py;
+        Zy.value = pZy;
+        Ay.value = pAy;
+        onchange(x, `Zahl der Räuber [x = ${x.value}]`)
+        onchange(y, `Zahl der Beutetiere [y = ${y.value}]`)
+        onchange(Zx, `Geburtenrate der Räuber [Zx = ${Zx.value}]`)
+        onchange(Ax, `Sterberate der Räuber [Ax = ${Ax.value}]`)
+        onchange(Zy, `Geburtenrate der Beute [Zy = ${Zy.value}]`)
+        onchange(Ay, `Sterberate der Beute [Ay = ${Ay.value}]`)
+        Main_Update();
+        
+    }
+
+    wolf_antilop.onclick =()=>{
+        set(10**1,10**10,0.001,9,10,0.1)
+    }
+
 
     let b = document.createElement('button');
     b.innerHTML = 'Step'
     b.onclick = () => {
-        x.value = x_next > 0 ? x_next : 0;
-        y.value = y_next > 0 ? y_next : 0;
+        x.value = x_next > 0 ? Math.round(x_next) : 0;
+        y.value = y_next > 0 ? Math.round(y_next) : 0;
         onchange(x, `Zahl der Räuber [x = ${x.value}]`)
         onchange(y, `Zahl der Beutetiere [y = ${y.value}]`)
         onchange(Zx, `Geburtenrate der Räuber [Zx = ${Zx.value}]`)
@@ -129,18 +157,40 @@ function Main() {
     document.body.append(text);
 
     this.Main_Update();
+
+
+
+    //Trajektor Produzieren***************************************************/
+
+    traj = createCanvas(500,300);
+    traj.c.style.backgroundColor = 'black'
+    traj.center.x = 25;
+    traj.center.y = traj.height-25
+
+
+    /***********************************************************************/
     
-    graph = createCanvas(800,100);
+    //Graph Produzieren**************************************/
+    
+    let graph = createCanvas(500,300);
+    graph.c.style.backgroundColor = 'black'
     graph_generate = document.createElement('button');
     graph_generate.innerHTML = 'Generate Graph'
     graph_generate.style.height = '25px';
     graph_generate.onclick = () => {
+        let g = graph.g;
         graph.g.clear();
         let t = 0;
         graph.Draw = () => {
             b.click();
-            (new Circle(t,-x.value/1000,1,'red')).draw();
+            (new Circle(t,-x.value,1,'rgb(255,0,0,0.5)')).draw(g);
+            (new Circle(t,-y.value,1,'rgb(0,0,255,0.5)')).draw(g);
             t++;
+        }
+        traj.g.clear();
+        traj.Draw = () => {
+            let g = traj.g;
+            (new Circle(x.value/100,-y.value/100,1,'white')).draw(g);
         }
     };
     graph_stop = document.createElement('button');
@@ -148,6 +198,7 @@ function Main() {
     graph_stop.style.height = '25px';
     graph_stop.onclick = () => {
         graph.Draw = () => {}
+        traj.Draw = () => {}
     }
     graph_stop.style.backgroundColor = 'red'
     document.body.append(graph_generate,graph_stop);
@@ -158,6 +209,18 @@ function Main() {
     onchange(Ax, `Sterberate der Räuber [Ax = ${Ax.value}]`)
     onchange(Zy, `Geburtenrate der Beute [Zy = ${Zy.value}]`)
     onchange(Ay, `Sterberate der Beute [Ay = ${Ay.value}]`)
+    
 
 
 }
+
+
+
+//SAP -> streichen von applikationen, welche nicht bearbeitet werden müssen
+//Notbeleuchtung für Udo fertig machen (Problem: Admin funktioniert nicht, Bearbeiter ja) fertig machen, für Mittwoch gespräch angedacht
+
+
+//Nina geholfen bei einer Peris Sache (Tooltip/Interactive Report beim zeigen auf verkürzte Beschreibung)
+
+//heute für Präsentation morgen was vorbereiten
+//dafür morgen spät nachmittag im Homeoffice Notbeleuchtung fertig machen

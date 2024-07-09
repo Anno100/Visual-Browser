@@ -6,28 +6,30 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Home</title>
     <style>
-        body,div{
-	display: flex;
-	flex-direction: column;
-	align-items:flex-start;
-    min-width: 500px;
-    width: 90%;
-        }
-        input{
-            width: 100px;
+        .input_number {
+            display: flex;
+            flex-direction: column;
         }
 
-        .d{
-            align-items: flex-end;
+        body{
+            flex-direction: row;
+            width: 100%;
+
         }
+
+        .row {
+            display: flex;
+            width: 100%;
+        }
+
         canvas{
-            
-            border-color: white;
+            background-color: transparent;
         }
     </style>
 </head>
 
 <body>
+    <h1>Generator für Trajektor und Graphen</h1>
     <script src='../lib/Boot.js'>
     </script>
 </body>

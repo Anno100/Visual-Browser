@@ -2,6 +2,7 @@
 
 function Main(){
     createFormButton('Räuber Beute 0');
+    createFormButton('Räuber Beute 1');
     nextRow();
     createFormButton('Sierpinski');
     createFormButton('Mandelbrot');
