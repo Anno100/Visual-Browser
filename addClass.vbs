@@ -10,8 +10,8 @@ if ex_name = "" then ex_name = "Object"
 if name <> "" then 
     fa.CreateTextFile("lib/"&name&".js")
     fa.OpenTextFile("lib/"&name&".js",2).Write "let check_"&name&" = setInterval(() => {"&vbCrLf&"if ("&ex_name&") {"&vbCrLf&name&" = class "&name&" extends "&ex_name&" {"&vbCrLf&"//enter your code"&vbCrLf&"}"&vbCrLf&"load_"&name&" = true;"&vbCrLf&"clearInterval(check_"&name&");"&vbCrLf&"}"&vbCrLf&"else{"&vbCrLf&"console.log('wait');"&vbCrLf&"}"&vbCrLf&"},1);"
-    FindAndReplace "lib/Boot.js","//addClass","class "&name&" extends "&ex_name&"{};"&vbCrLf&"importJs('../lib/"&name&".js');"&vbCrLf&"load_"&name&" = false;"&vbCrLf&vbCrLf&"//addClass"
-    FindAndReplace "lib/Boot.js","/*load_class*/","&& load_"&name&"/*load_class*/"
+    FindAndReplace "lib/Boot.js","//[CLASS]","class "&name&" extends "&ex_name&"{};"&vbCrLf&"importJs('../lib/"&name&".js');"&vbCrLf&"load_"&name&" = false;"&vbCrLf&vbCrLf&"//[CLASS]"
+    FindAndReplace "lib/Boot.js","/*[LOAD]*/","&& load_"&name&"/*[LOAD]*/"
 
 end if
 
