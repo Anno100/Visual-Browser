@@ -1,4 +1,4 @@
 function Main(){
-    let c = new CanvasObject(1,2)
-    console.log(c)
+    let c = new Canvas();
+    console.log(1)
 }
