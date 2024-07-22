@@ -18,7 +18,7 @@ class Beziehung_Raeuber_Beute {
     }
 
     i = 0;
-    step = 0.01;
+    step = 0.1;
 
     /**
      * 
