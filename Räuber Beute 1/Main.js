@@ -121,6 +121,11 @@ function Main() {
                 Beziehung_Raeuber_Beute.all.forEach(e => {
                     (new Circle(e.i * xzoom,-e.Raeuber.Anzahl * yzoom,1,e.Raeuber.color)).draw(graph.g);
                     (new Circle(e.i * xzoom,-e.Beute.Anzahl * yzoom,1,e.Beute.color)).draw(graph.g);
+
+                    if(e.i % 4 < 0.5){
+                        (new Circle(e.i*xzoom,-e.Raeuber.sum/e.i * yzoom,1,e.Raeuber.color)).draw(graph.g);
+                        (new Circle(e.i*xzoom,-e.Beute.sum/e.i * yzoom,1,e.Beute.color)).draw(graph.g);
+                    }
                 });
                 
             }
