@@ -1,6 +1,7 @@
 class Wesen {
     static i = 0;
     static all = [];
+    
     /**
      *
      * @param {number} Anzahl
@@ -15,6 +16,7 @@ class Wesen {
         this.id = Wesen.i;
         this.name = name ? name : `Wesen_${this.id}`;
         this.color = color ? color : `${this.id}`;
+        this.sum = 0;
         Wesen.i++;
 
         Wesen.all.push(this)
