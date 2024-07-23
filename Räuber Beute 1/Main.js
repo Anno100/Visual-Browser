@@ -59,6 +59,7 @@ function Main() {
     create_graph.onclick = () => {
         
         graph.Draw = () => {
+            (new Rect(0,0,10,10,'pink')).draw();
         }
     }
 
