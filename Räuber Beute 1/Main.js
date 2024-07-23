@@ -2,41 +2,105 @@
 function Main() {
 
 
-    const graph = createCanvas(500, 300)
-    graph.c.style.backgroundColor = 'rgb(255,255,255,0.6)'
-    graph.center.x = 0;
-    graph.center.y = graph.height-10;
-    const graph_Zoom = { x: 2, y: 2 }
 
-    let INTERVAL = null;
+    /**LEBEWESEN */
+    let wesen = $create('div');
+    wesen.className = 'BODY';
+    document.body.appendChild(wesen)
 
-    generate = () => {
+    /**Lebewesen erstellen Button */
+    const create_wesen = $create('button');
+    create_wesen.classList.add('button-add');
+    create_wesen.innerHTML = '+';
+    create_wesen.onclick = () => {
+        $table_new_row(t_wesen)
+        let l = $table_rows(t_wesen);
+        $table_set(t_wesen,l-1,0,l-1)
+    }
 
-        graph.g.clear();
-        clearInterval(INTERVAL);
-        Beziehung_Raeuber_Beute.all.forEach(e => {
-            e.i = 0;
-        })
+    /**Lebewesen erstellen Tabelle */
+    const t_wesen = $create_table('ID:number:readonly', 'Name:text', 'Anzahl:number', 'Geburtenrate:number', 'Sterberate:number','Farbe:color')
+    wesen.append(create_wesen, t_wesen)
 
-        
+    $table_new_row(t_wesen)
+    $table_set(t_wesen,0,0,0)
+
+
+    /**BEZIEHUNGEN */
+    let beziehung = $create('div');
+    beziehung.className = 'BODY';
+    document.body.appendChild(beziehung)
+
+    /**Beziehung erstellen Button */
+    const create_beziehung = $create('button');
+    create_beziehung.classList.add('button-add');
+    create_beziehung.innerHTML = '+';
+    create_beziehung.onclick = () => {
+        $table_new_row(t_beziehung)
+        let l = $table_rows(t_beziehung);
+        $table_set(t_beziehung,l-1,0,l-1)
+    }
+
+    /**Lebewesen erstellen Tabelle */
+    const t_beziehung = $create_table('ID:number:readonly', 'Räuber-ID:number', 'Beute-ID:number')
+    beziehung.append(create_beziehung, t_beziehung)
+
+
+    /**GRAPHEN */
     
-        INTERVAL = setInterval(()=>{
-            Beziehung_Raeuber_Beute.all.forEach(e => {
-                console.log(e.toString())
-                e.tick();
-            })
-        },1);
+    let graphen = $create('div');
+    graphen.className = 'BODY';
+    document.body.appendChild(graphen)
 
+    /**Graphen erstellen Button */
+    const create_graph = $create('button');
+    create_graph.style.backgroundColor = 'brown'
+    create_graph.innerHTML = 'Graph generieren';
+    create_graph.onclick = () => {
+        
         graph.Draw = () => {
-
-            Beziehung_Raeuber_Beute.all.forEach(e => {
-                (new Circle(e.i * graph_Zoom.x, -e.Raeuber.Anzahl * graph_Zoom.y, 1, e.Raeuber.color)).draw(graph.g);
-                //(new Circle(beziehung.i*graph_Zoom.x,-sum_Raeuber/beziehung.i,0.5,'rgb(255,255,0,0.5)')).draw(graph.g);
-                (new Circle(e.i * graph_Zoom.x, -e.Beute.Anzahl * graph_Zoom.y, 1, e.Beute.color)).draw(graph.g);
-                //(new Circle(beziehung.i*graph_Zoom.x,-sum_Beute/beziehung.i,0.5,'rgb(0,255,255,0.5)')).draw(graph.g);})
-             
-            })
         }
     }
+
+    /**Graph speichern Button */
+    const save_graph = $create('button')
+    save_graph.style.backgroundColor = 'green'
+    save_graph.innerHTML = 'Speichern'
+    save_graph.onclick = () => {
+        let link = $create('a');
+        link.download = 'Graph'
+        link.href = graph.c.toDataURL()
+        document.body.appendChild(link)
+        link.click();
+        delete link;
+    }
+
+    /**Graph */
+    const graph = createCanvas();
+
+
+
+
+    graphen.append(create_graph,save_graph,graph.c);
+    /*************************************** */
+
+    $table_new_row(t_beziehung)
+    $table_set(t_beziehung,0,0,0)
+
+    wesen.before('Lebewesen erstellen')
+    beziehung.before('Beziehung erstellen');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
