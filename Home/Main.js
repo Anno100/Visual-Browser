@@ -115,7 +115,7 @@ function Main(){
     createFormButton('Räuber Beute 1');
 let canvas_3d = createSBSCanvas();
 
-Mouse = { x: -100, y: -100 }
+let Mouse = { x: -100, y: -100 }
 
 document.body.onmousemove = (e) => {
     Mouse.x = e.offsetX;
