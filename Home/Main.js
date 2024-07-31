@@ -123,6 +123,6 @@ document.body.onmousemove = (e) => {
 }
 setInterval(() => {
     canvas_3d.clear();
-    canvas_3d.fillRect(Mouse.x, Mouse.y, 100, 100, 0, 'red');
+    canvas_3d.fillRect(10, 10, 100, 100, 0, 'red');
 });
 } 
