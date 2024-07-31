@@ -104,6 +104,28 @@ const createSBSCanvas = () => {
         }
 
     }
+    document.body.ondblclick = (e) => {
+            view.requestFullscreen();
+            setTimeout(() => {
+                left.setWidth(window.innerWidth / 2);
+                right.setWidth(window.innerWidth / 2);
+                left.setHeight(window.innerHeight);
+                right.setHeight(window.innerHeight);
+
+
+            }, 100);
+        
+        if (e.key == 'Escape') {
+
+            left.setWidth(0);
+            right.setWidth(0);
+            left.setHeight(0);
+            right.setHeight(0);
+
+        }
+
+    }
+    
     document.body.append(view);
     view.append(left.element, right.element);
 
