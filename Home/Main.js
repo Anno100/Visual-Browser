@@ -118,11 +118,12 @@ let canvas_3d = createSBSCanvas();
 Mouse = { x: -100, y: -100 }
 
 document.body.onmousemove = (e) => {
-    this.Mouse.x = e.offsetX;
-    this.Mouse.y = e.offsetY;
+    Mouse.x = e.offsetX;
+    Mouse.y = e.offsetY;
 }
 setInterval(() => {
     canvas_3d.clear();
-    canvas_3d.fillRect(10, 10, 100, 100, 0, 'red');
+    canvas_3d.fillRect(Mouse.x, Mouse.y, 100, 100, 0, 'red');
 });
+
 } 
