@@ -19,6 +19,13 @@ class RectSBS{
     }
 }
 
+
+function is_touch_enabled() {
+    return ( 'ontouchstart' in window ) || 
+           ( navigator.maxTouchPoints > 0 ) ||
+           ( navigator.msMaxTouchPoints > 0 );
+}
+
 function Main() {
     console.clear();
     createFormButton('Home');
@@ -56,7 +63,20 @@ function Main() {
     }
     canvas_3d.right.element.onmouseup = () => {
         right = false;
+        
     }
+    canvas_3d.left.element.addEventListener('touchstart',() => {
+        if(is_touch_enabled())left = true;
+    })
+    canvas_3d.left.element.addEventListener('touchend', () => {
+        left = false;
+    })
+    canvas_3d.right.element.addEventListener('touchstart', () => {
+        if(is_touch_enabled())right = true;
+    })
+    canvas_3d.right.element.addEventListener('touchend', () => {
+        right = false;
+    })
     document.body.addEventListener('keyup',(e)=>{
         if(e.key == 'a') left = false;
         if(e.key == 'd') right = false;
