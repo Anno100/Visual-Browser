@@ -38,7 +38,7 @@ function Main() {
         onLeftSide = false;
     }
 
-    player = canvas_3d.addGameObject(new RectSBS(50,500,5,10,'blue'));
+    player = canvas_3d.addGameObject(new RectSBS(50,window.innerHeight*0.7,5,10,'blue'));
     right = false;
     left = false;
     document.body.addEventListener('keydown',(e)=>{
