@@ -1,0 +1,239 @@
+function Main() {
+
+    let c = createCanvas(1200, 1200);
+    let g = c.g;
+
+    grid = 10;
+
+    class Turmite extends Rect {
+        constructor(x, y, width, height) {
+            super(x, y, width, height, 'red');
+            this.dir = 'top'
+        }
+        getLeft = () => {
+            switch (this.dir) {
+                case 'top':
+                    return new Turmite(this.x - grid, this.y, this.w, this.h, 'green');
+
+
+                case 'down':
+                    return new Turmite(this.x + grid, this.y, this.w, this.h, 'green');
+
+
+
+                case 'left':
+                    return new Turmite(this.x, this.y + grid, this.w, this.h, 'green');
+
+
+
+                case 'right':
+                    return new Turmite(this.x, this.y - grid, this.w, this.h, 'green');
+
+
+
+            }
+        }
+        getRight = () => {
+            switch (this.dir) {
+                case 'top':
+                    return new Turmite(this.x + grid, this.y, this.w, this.h, 'green');
+
+
+                case 'down':
+                    return new Turmite(this.x - grid, this.y, this.w, this.h, 'green');
+
+
+
+                case 'left':
+                    return new Turmite(this.x, this.y - grid, this.w, this.h, 'green');
+
+
+
+                case 'right':
+                    return new Turmite(this.x, this.y + grid, this.w, this.h, 'green');
+
+
+
+            }
+
+        }
+        getTop = () => {
+            switch (this.dir) {
+                case 'top':
+                    return new Turmite(this.x, this.y - grid, this.w, this.h, 'green');
+
+
+                case 'down':
+                    return new Turmite(this.x, this.y + grid, this.w, this.h, 'green');
+
+
+
+                case 'left':
+                    return new Turmite(this.x - grid, this.y, this.w, this.h, 'green');
+
+
+
+                case 'right':
+                    return new Turmite(this.x + grid, this.y, this.w, this.h, 'green');
+
+
+
+            }
+
+        }
+        getDown = () => {
+            switch (this.dir) {
+                case 'top':
+                    return new Turmite(this.x, this.y + grid, this.w, this.h, 'green');
+
+
+                case 'down':
+                    return new Turmite(this.x, this.y - grid, this.w, this.h, 'green');
+
+
+
+                case 'left':
+                    return new Turmite(this.x + grid, this.y, this.w, this.h, 'green');
+
+
+
+                case 'right':
+                    return new Turmite(this.x - grid, this.y, this.w, this.h, 'green');
+
+
+
+            }
+
+        }
+
+        checkLeft = (rects) => {
+            let x = false;
+            rects.forEach(e => {
+                if (this.getLeft().overlap(e)) {
+                    x = true;
+                }
+            })
+            return x;
+        }
+        checkRight = (rects) => {
+            let x = false;
+            rects.forEach(e => {
+                if (this.getRight().overlap(e)) {
+                    x = true;
+                }
+            })
+            return x;
+        }
+        checkTop = (rects) => {
+            let x = false;
+            rects.forEach(e => {
+                if (this.getTop().overlap(e)) {
+                    x = true;
+                }
+            })
+            return x;
+        }
+        checkDown = (rects) => {
+            let x = false;
+            rects.forEach(e => {
+                if (this.getDown().overlap(e)) {
+                    x = true;
+                }
+            })
+            return x;
+        }
+
+        turnRight = () => {
+            switch (this.dir) {
+                case 'right':
+
+                    this.dir = 'down'
+                    break;
+                case 'left':
+
+                    this.dir = 'top'
+                    break;
+                case 'top':
+
+                    this.dir = 'right'
+                    break;
+                case 'down':
+
+                    this.dir = 'left'
+                    break;
+
+            }
+        }
+        turnLeft = () => {
+            switch (this.dir) {
+                case 'right':
+
+                    this.dir = 'top'
+                    break;
+                case 'left':
+
+                    this.dir = 'down'
+                    break;
+                case 'top':
+
+                    this.dir = 'left'
+                    break;
+                case 'down':
+
+                    this.dir = 'right'
+                    break;
+
+            }
+        }
+
+
+        overlap = (other) => this.x + this.w / 2 >= other.x - other.w / 2 && other.x + other.w / 2 >= this.x - this.w / 2 && this.y + this.h / 2 >= other.y - other.w / 2 && other.y + other.h / 2 >= this.y - this.h / 2;
+
+    }
+
+    let turmite = new Turmite(0, 0, grid*0.9, grid*0.9);
+    turmite.dir = 'right'
+
+    holes = [];
+
+
+    c.Draw = () => {
+
+        let isHole = false;
+        holes.forEach((e, i) => {
+            if (turmite.overlap(e)) {
+                isHole = true;
+            }
+        })
+        if (!isHole) holes.push(new Rect(turmite.x, turmite.y, grid, grid, 'black'))
+        holes.forEach(e => e.draw());
+
+
+
+
+
+        if(!turmite.checkDown(holes)) turmite.turnRight();
+        else if(!turmite.checkLeft(holes) && !turmite.checkRight(holes)) turmite.turnLeft();
+
+
+
+        switch (turmite.dir) {
+            case 'top':
+                turmite.y -= grid;
+                break;
+            case 'down':
+                turmite.y += grid;
+                break;
+            case 'left':
+                turmite.x -= grid;
+                break;
+            case 'right':
+                turmite.x += grid;
+                break;
+        }
+
+
+        turmite.draw();
+    }
+
+}
