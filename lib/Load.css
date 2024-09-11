@@ -19,10 +19,17 @@ button:hover{
     transition: 0.5s;
 }
 
+label{
+  width: 200px;
+}
+
 
 
 canvas{
     background-color: white;
+}
+input{
+  width: 300px;
 }
 
 

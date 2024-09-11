@@ -315,7 +315,26 @@ function Main() {
     let table = $create_table('State:number', 'current Color:color', 'next Color:color', 'Turn:number', 'next State:number');
     $table_new_row(table, 0, '#FFFFFF', '#000000', 0, 0)
     Rules.append(create_rule, table)
-    document.body.append(Rules)
+
+    /**States */
+    let States = $create('div');
+    States.className = 'BODY';
+
+    /**States erstellen Button */
+    let create_state = $create('button');
+    create_state.classList.add('button-add');
+    create_state.innerHTML = '+';
+    create_state.onclick = () => {
+        $table_new_row(create_state)
+    }
+
+    let table2 = $create_table('State Nr:number', 'description:text');
+    $table_new_row(table2,0)
+    States.append(create_state, table2)
+
+
+
+    document.body.append(Rules,'Turn erlaubt die Werte 0 - 3. (0 -> Turn Left), (1 -> Turn Right), (2 -> Turn 180°), (3 -> no Turn)',States)
 
     let text_step = $create('h1')
     document.body.append(text_step)
@@ -399,10 +418,11 @@ function Main() {
 
     document.body.append(start_fibbo)
 
-
     let MSEC = $create('input','msec')
     MSEC.placeholder = 'One frame per x msec'
     MSEC.value = 1;
+
+    
     let SPEED = $create('input','speed')
     SPEED.placeholder = 'Speed'
     SPEED.value = 100;
@@ -411,21 +431,47 @@ function Main() {
     let Turmite_length = $create('input','Turmite Length')
     Turmite_length.placeholder = 'Turmite Length >= 2'
     Turmite_length.value = 2;
+    let canvas_width = $create('input','Width')
+    canvas_width.placeholder = 'Canvas Width'
+    canvas_width.value = 500;
+    let canvas_height = $create('input','Height')
+    canvas_height.placeholder = 'Canvas Height'
+    canvas_height.value = 500;
     let BACKGROUND = $create('input','background')
     BACKGROUND.type = 'color'
-    BACKGROUND.style.width = '100px';
+    BACKGROUND.style.width = '200px';
     BACKGROUND.value = '#FFFFFF';
+    BACKGROUND.onchange = () => {
+        g.setFillStyle(hexToRgb($v('background')));
+        g.fillRect(0, 0, c.width, c.height);
+    }
+    canvas_width.onchange = () => {
+        c.width = canvas_width.value;
+        c.c.width = canvas_width.value;
+        c.center.x = c.width/2;
+    }
+    canvas_height.onchange = () => {
+        c.height = canvas_height.value;
+        c.c.height = canvas_height.value;
+        c.center.y = c.h/2;
+    }
+
 
     
     
-    document.body.append($create('br'),MSEC,SPEED,MAXSTEPS,Turmite_length,$create('br'),BACKGROUND)
+    document.body.append($create('br'),MSEC,'Milliseconds',$create('br'),SPEED,'Frames per Milliseconds',$create('br'),MAXSTEPS,'Max amount of steps',$create('br'),Turmite_length,'Length of Turmite',$create('br'),canvas_width,'Width of Canvas',$create('br'),canvas_height,'Height of Canvas',$create('br'),BACKGROUND,'Background Color',$create('br'))
+    
+    document.body.append(start,start_spiral,start_fibbo,start_brain,$create('br'))
 
-    let c = createCanvas(window.innerWidth - 50, window.innerHeight - 200);
+    let c = createCanvas(500,500);
+
+    document.body.append($create('br'))
     g = c.g;
 
     let msec = 1;
     let speed = 100;
     let maxSteps = undefined
+
 
 
 
@@ -483,6 +529,15 @@ function Main() {
         speed = Number($v('speed'));
         maxSteps = Number($v('maxSteps'));
         background = hexToRgb($v('background'));
+
+        c.width = Number($v('Width'))
+        c.height = Number($v('Height'))
+        
+        c.c.width = Number($v('Width'))
+        c.c.height = Number($v('Height'))
+
+        c.center.x = c.width/2;
+        c.center.y = c.height/2;
 
         clearInterval(x);
         g.setFillStyle(hexToRgb($v('background')));
