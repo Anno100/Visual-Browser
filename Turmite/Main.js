@@ -406,6 +406,8 @@ function Main() {
     SPEED.placeholder = 'Speed'
     let MAXSTEPS = $create('input','maxSteps')
     MAXSTEPS.placeholder = 'Max Steps'
+    let Turmite_length = $create('input','Turmite Length')
+    Turmite_length.placeholder = 'Turmite Length >= 2'
     let BACKGROUND = $create('input','background')
     BACKGROUND.type = 'color'
     BACKGROUND.style.width = '100px';
@@ -413,7 +415,7 @@ function Main() {
 
     
     
-    document.body.append($create('br'),MSEC,SPEED,MAXSTEPS,$create('br'),BACKGROUND)
+    document.body.append($create('br'),MSEC,SPEED,MAXSTEPS,Turmite_length,$create('br'),BACKGROUND)
 
     let c = createCanvas(window.innerWidth - 50, window.innerHeight - 200);
     g = c.g;
@@ -449,7 +451,6 @@ function Main() {
 
     step = 1;
 
-    t = new Turmite(0, 0, 2);
 
 
 
@@ -474,6 +475,7 @@ function Main() {
 
 
     const reset = () => {
+        t = new Turmite(0, 0, Number($v('Turmite Length')));
 
 
         msec = Number($v('msec'));
