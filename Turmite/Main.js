@@ -342,13 +342,15 @@ function Main() {
 
     start_spiral.onclick = () => {
         reset();
+        
+    g.setFillStyle(Color.WHITE);
+    g.fillRect(0, 0, c.width, c.height);
 
         t.rules = new RuleSet()
             .push(0,Color.WHITE,Color.BLACK,Turn.N,1)
             .push(0,Color.BLACK,Color.BLACK,Turn.R,0)
             .push(1,Color.WHITE,Color.BLACK,Turn.L,1)
             .push(1,Color.BLACK,Color.WHITE,Turn.N,0)
-        step = 0;
     }
 
 
@@ -371,7 +373,6 @@ function Main() {
         .push(0, Color.RED, Color.BLUE, Turn.R, 0)
         .push(0, Color.BLUE, Color.BLACK, Turn.L, 0)
 
-        step = 0;
     }
 
 
@@ -383,6 +384,10 @@ function Main() {
 
     start_fibbo.onclick = () => {
         reset();
+        
+    g.setFillStyle(Color.WHITE);
+    g.fillRect(0, 0, c.width, c.height);
+
 
         t.rules = new RuleSet()
             .push(0,Color.WHITE,Color.BLACK,Turn.L,1)
@@ -395,7 +400,16 @@ function Main() {
     document.body.append(start_fibbo)
 
 
-
+    let MSEC = $create('input','msec')
+    MSEC.placeholder = 'One frame per x msec'
+    let SPEED = $create('input','speed')
+    SPEED.placeholder = 'Speed'
+    let MAXSTEPS = $create('input','maxSteps')
+    MAXSTEPS.placeholder = 'Max Steps'
+    let BACKGROUND = $create('input','background')
+    BACKGROUND.type = 'color'
+    
+    document.body.append(MSEC,SPEED,MAXSTEPS,BACKGROUND)
 
     let c = createCanvas(window.innerWidth - 50, window.innerHeight - 200);
     g = c.g;
@@ -406,18 +420,13 @@ function Main() {
 
 
 
-    step = 0;
+    step = 1;
 
     t = new Turmite(0, 0, 2);
 
-    g.setFillStyle(Color.WHITE);
-    g.fillRect(0, 0, c.width, c.height);
 
 
-    t.onColor = Color.WHITE;
-
-
-    let x = setInterval(() => {
+    const runCanvas = () => {
 
         for (let i = 0; i < speed; i++) {
 
@@ -425,25 +434,36 @@ function Main() {
             if (step < maxSteps || !maxSteps) {
 
                 t.checkRule();
-                text_step.innerHTML = step;
+                text_step.innerHTML = step + ' steps!';
                 step++;
             }
         }
-    }, msec);
+    }
+
+    let x = setInterval(null, msec);
 
 
 
 
 
     const reset = () => {
-        g.setFillStyle(Color.WHITE);
+
+
+        msec = Number($v('msec'));
+        speed = Number($v('speed'));
+        maxSteps = Number($v('maxSteps'));
+        background = hexToRgb($v('background'));
+
+        clearInterval(x);
+        g.setFillStyle(hexToRgb($v('background')));
         g.fillRect(0, 0, c.width, c.height);
         t.x = 0;
         t.y = 0;
         t.dir = Direction.top;
         t.onColor = Color.WHITE;
         t.state = 0;
-        step = 0;
+        step = 1;
+        x = setInterval(runCanvas, msec);
     }
 
 
