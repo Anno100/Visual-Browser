@@ -402,12 +402,15 @@ function Main() {
 
     let MSEC = $create('input','msec')
     MSEC.placeholder = 'One frame per x msec'
+    MSEC.value = 1;
     let SPEED = $create('input','speed')
     SPEED.placeholder = 'Speed'
+    SPEED.value = 100;
     let MAXSTEPS = $create('input','maxSteps')
     MAXSTEPS.placeholder = 'Max Steps'
     let Turmite_length = $create('input','Turmite Length')
     Turmite_length.placeholder = 'Turmite Length >= 2'
+    Turmite_length.value = 2;
     let BACKGROUND = $create('input','background')
     BACKGROUND.type = 'color'
     BACKGROUND.style.width = '100px';
@@ -448,8 +451,6 @@ function Main() {
         clearInterval(x);
         x = setInterval(null);
     }
-
-    step = 1;
 
 
 
@@ -495,55 +496,6 @@ function Main() {
         x = setInterval(runCanvas, msec);
     }
 
-
-
-    const NewTest = (msec, speed = 100, maxSteps = undefined, keyboard = false) => {
-
-        t = new Turmite(0, 0, 50);
-
-        t.onColor = Color.WHITE;
-        x = setInterval(() => { });
-
-        start.onclick = () => {
-            clearInterval(x);
-            g.setFillStyle(Color.WHITE);
-            //g.fillRect(0, 0, c.width, c.height);
-            step = 0;
-
-            t.rules = new RuleSet();
-            for (let i = 0; i < $table_rows(table); i++) {
-                let row = $table_get_row(table, i);
-                t.rules.push(Number(row.get('State')), hexToRgb(row.get('current Color')), hexToRgb(row.get('next Color')), Number(row.get('Turn')), Number(row.get('next State')));
-
-            }
-            console.log(t.rules)
-            if (keyboard) {
-                document.body.onkeydown = () => t.checkRule();
-                return
-            }
-            x = setInterval(() => {
-
-                for (let i = 0; i < speed; i++) {
-
-
-                    if (step < maxSteps || !maxSteps) {
-
-                        t.checkRule();
-                        text_step.innerHTML = step;
-                        step++;
-                    }
-                }
-            }, msec);
-
-        }
-
-
-
-
-
-
-
-    }
 
 
 
