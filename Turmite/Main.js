@@ -389,7 +389,6 @@ function Main() {
             .push(0,Color.BLACK,Color.BLACK,Turn.L,1)
             .push(1,Color.WHITE,Color.BLACK,Turn.R,1)
             .push(1,Color.BLACK,Color.WHITE,Turn.N,0)
-        step = 0;
     }
 
 
@@ -444,6 +443,7 @@ function Main() {
         t.dir = Direction.top;
         t.onColor = Color.WHITE;
         t.state = 0;
+        step = 0;
     }
 
 
