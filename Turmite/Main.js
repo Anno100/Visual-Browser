@@ -408,8 +408,12 @@ function Main() {
     MAXSTEPS.placeholder = 'Max Steps'
     let BACKGROUND = $create('input','background')
     BACKGROUND.type = 'color'
+    BACKGROUND.style.width = '100px';
+    BACKGROUND.value = '#FFFFFF';
+
     
-    document.body.append(MSEC,SPEED,MAXSTEPS,BACKGROUND)
+    
+    document.body.append($create('br'),MSEC,SPEED,MAXSTEPS,$create('br'),BACKGROUND)
 
     let c = createCanvas(window.innerWidth - 50, window.innerHeight - 200);
     g = c.g;
@@ -419,6 +423,29 @@ function Main() {
     let maxSteps = undefined
 
 
+
+    /**Graph speichern Button */
+    const save_graph = $create('button')
+    save_graph.style.backgroundColor = 'green'
+    save_graph.innerHTML = 'Speichern'
+    save_graph.onclick = () => {
+        let link = $create('a');
+        link.download = `Turmite`
+        link.href = c.c.toDataURL()
+        document.body.appendChild(link)
+        link.click();
+        delete link;
+    }
+    
+    /**Graph stop */
+    const stop = $create('button')
+    stop.innerHTML = 'Stop'
+    stop.style.backgroundColor = 'red'
+    document.body.append(stop,save_graph);
+    stop.onclick = () => {
+        clearInterval(x);
+        x = setInterval(null);
+    }
 
     step = 1;
 
