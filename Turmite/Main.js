@@ -325,7 +325,7 @@ function Main() {
     create_state.classList.add('button-add');
     create_state.innerHTML = '+';
     create_state.onclick = () => {
-        $table_new_row(create_state)
+        $table_new_row(table2)
     }
 
     let table2 = $create_table('State Nr:number', 'description:text');
