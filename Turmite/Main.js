@@ -62,6 +62,7 @@ function Main() {
             this.onColor = Color.WHITE
             this.l = l;
             this.state = 0;
+            /**@type {RuleSet} */
             this.rules = new RuleSet();
         }
         getTop = () => {
@@ -76,7 +77,7 @@ function Main() {
                     return new Rect(this.x, this.y + this.l, this.w, this.h, g.getRealPixelColor(this.x, this.y + this.l));
             }
         }
-    
+
         getLeft = () => {
             switch (this.dir) {
                 case Direction.top:
@@ -89,7 +90,7 @@ function Main() {
                     return new Rect(this.x + this.l, this.y, this.w, this.h, g.getRealPixelColor(this.x + this.l, this.y));
             }
         }
-    
+
         getRight = () => {
             switch (this.dir) {
                 case Direction.top:
@@ -102,7 +103,7 @@ function Main() {
                     return new Rect(this.x - this.l, this.y, this.w, this.h, g.getRealPixelColor(this.x - this.l, this.y));
             }
         }
-    
+
         getDown = () => {
             switch (this.dir) {
                 case Direction.top:
@@ -115,31 +116,31 @@ function Main() {
                     return new Rect(this.x, this.y - this.l, this.w, this.h, g.getRealPixelColor(this.x, this.y - this.l));
             }
         }
-    
+
         checkColor = (dir, v_r, v_g = undefined, v_b = undefined, v_a = undefined) => {
-    
+
             if (v_g == undefined) {
                 switch (v_r) {
                     case 'black':
                         return this.checkColor(dir, 0, 0, 0, 255);
-    
+
                     case 'white':
                         return this.checkColor(dir, 255, 255, 255, 255);
                     case 'red':
                         return this.checkColor(dir, 255, 0, 0, 255);
                     case 'blue':
                         return this.checkColor(dir, 0, 0, 255, 255);
-    
+
                     case 'transparent':
                         return this.checkColor(dir, 0, 0, 0, 0);
-    
+
                     default:
                         return false;
                 }
             }
-    
+
             let rect = null;
-    
+
             switch (dir) {
                 case Direction.top:
                     rect = this.getTop();
@@ -154,18 +155,18 @@ function Main() {
                     rect = this.getDown();
                     break;
             }
-    
+
             let data = g.getPixelData(rect.x + c.center.x, rect.y + c.center.y);
             let R = data[0];
             let G = data[1];
             let B = data[2];
             let A = data[3];
-    
+
             return R == v_r && G == v_g && B == v_b && A == v_a;
-    
-    
+
+
         }
-    
+
         Draw = () => {
             this.draw();
             switch (this.dir) {
@@ -182,14 +183,14 @@ function Main() {
                     new Rect(this.x, this.y + this.h / 3, this.w, this.h / 3, 'green').draw();
                     break;
             }
-    
+
         }
-    
+
         moveForward = () => {
-    
+
             let newOnColor = this.getTop().color;
-    
-    
+
+
             switch (this.dir) {
                 case Direction.top:
                     this.y -= this.l;
@@ -203,16 +204,16 @@ function Main() {
                 case Direction.down:
                     this.y += this.l;
                     break;
-    
+
                 default:
                     break;
             }
-    
+
             this.getDown().setColor(this.onColor).draw();
             this.onColor = newOnColor;
-    
+
         }
-    
+
         turnRight = () => {
             switch (this.dir) {
                 case Direction.top:
@@ -227,14 +228,14 @@ function Main() {
                 case Direction.down:
                     this.dir = Direction.left;
                     break;
-    
+
                 default:
                     break;
             }
-    
+
         }
-    
-    
+
+
         turnLeft = () => {
             switch (this.dir) {
                 case Direction.top:
@@ -249,21 +250,21 @@ function Main() {
                 case Direction.down:
                     this.dir = Direction.right;
                     break;
-    
+
                 default:
                     break;
             }
-    
+
         }
-    
-    
+
+
         checkRule = () => {
             let ruleset = this.rules.filter(e => e.state == this.state).filter(e => e.color == this.onColor);
-    
+
             if (ruleset.length == 1) {
                 let r = ruleset[0];
                 this.onColor = r.newColor;
-    
+
                 switch (r.turn) {
                     case Turn.L:
                         this.turnLeft();
@@ -275,28 +276,47 @@ function Main() {
                         this.turnLeft();
                         this.turnLeft();
                         break;
-                    case Turn.N:
+                    case Turn.B:
+                        this.turnLeft();
+                        this.turnLeft();
+                        this.moveForward();
+                        this.moveForward();
+                        this.turnLeft();
+                        this.turnLeft();
                         break;
-    
-    
+                    case Turn.G:
+                        let tt = new Turmite(this.x, this.y, this.l)
+                        tt.turnLeft();
+                        tt.turnLeft();
+                        tt.rules = this.rules;
+                        tt.color = t.color;
+
+                        if (T.length < Number($v('Max Turmites'))) T.push(tt);
+                        break;
+                    case Turn.D:
+                        T = T.filter(e => e != this);
+                        break;
+
+
+
                 }
-    
+
                 this.moveForward();
                 this.state = r.nextState;
-    
+
                 this.Draw();
-    
+
             }
-    
+
         }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     }
-    
+
 
 
     /**Rules */
@@ -329,12 +349,12 @@ function Main() {
     }
 
     let table2 = $create_table('State Nr:number', 'description:text');
-    $table_new_row(table2,0)
+    $table_new_row(table2, 0)
     States.append(create_state, table2)
 
 
 
-    document.body.append(Rules,'Turn erlaubt die Werte 0 - 3. (0 -> Turn Left), (1 -> Turn Right), (2 -> Turn 180°), (3 -> no Turn)',States)
+    document.body.append(Rules, 'Turn erlaubt die Werte 0 - 3. (0 -> Turn Left), (1 -> Turn Right), (2 -> Turn 180°), (3 -> no Turn),', $create('br'),  'EXTRA: (4 -> Move Backwards), (5 -> Generate new Turmite with same rules watching 180° from itself)', States)
 
     let text_step = $create('h1')
     document.body.append(text_step)
@@ -361,21 +381,21 @@ function Main() {
 
     start_spiral.onclick = () => {
         reset();
-        
-    g.setFillStyle(Color.WHITE);
-    g.fillRect(0, 0, c.width, c.height);
+
+        g.setFillStyle(Color.WHITE);
+        g.fillRect(0, 0, c.width, c.height);
 
         t.rules = new RuleSet()
-            .push(0,Color.WHITE,Color.BLACK,Turn.N,1)
-            .push(0,Color.BLACK,Color.BLACK,Turn.R,0)
-            .push(1,Color.WHITE,Color.BLACK,Turn.L,1)
-            .push(1,Color.BLACK,Color.WHITE,Turn.N,0)
+            .push(0, Color.WHITE, Color.BLACK, Turn.N, 1)
+            .push(0, Color.BLACK, Color.BLACK, Turn.R, 0)
+            .push(1, Color.WHITE, Color.BLACK, Turn.L, 1)
+            .push(1, Color.BLACK, Color.WHITE, Turn.N, 0)
     }
 
 
     document.body.append(start_spiral)
 
-    
+
     let start_brain = $create('button')
     start_brain.innerHTML = 'Start Brain'
 
@@ -387,60 +407,73 @@ function Main() {
         g.fillRect(0, 0, c.width, c.height);
 
         t.rules = new RuleSet()
-        .push(0, Color.BLACK, Color.GREEN, Turn.L, 0)
-        .push(0, Color.GREEN, Color.RED, Turn.R, 0)
-        .push(0, Color.RED, Color.BLUE, Turn.R, 0)
-        .push(0, Color.BLUE, Color.BLACK, Turn.L, 0)
+            .push(0, Color.BLACK, Color.GREEN, Turn.L, 0)
+            .push(0, Color.GREEN, Color.RED, Turn.R, 0)
+            .push(0, Color.RED, Color.BLUE, Turn.R, 0)
+            .push(0, Color.BLUE, Color.BLACK, Turn.L, 0)
 
     }
 
 
     document.body.append(start_brain)
-    
+
     let start_fibbo = $create('button')
     start_fibbo.innerHTML = 'Start Fibonacci'
 
 
     start_fibbo.onclick = () => {
         reset();
-        
-    g.setFillStyle(Color.WHITE);
-    g.fillRect(0, 0, c.width, c.height);
+
+        g.setFillStyle(Color.WHITE);
+        g.fillRect(0, 0, c.width, c.height);
 
 
         t.rules = new RuleSet()
-            .push(0,Color.WHITE,Color.BLACK,Turn.L,1)
-            .push(0,Color.BLACK,Color.BLACK,Turn.L,1)
-            .push(1,Color.WHITE,Color.BLACK,Turn.R,1)
-            .push(1,Color.BLACK,Color.WHITE,Turn.N,0)
+            .push(0, Color.WHITE, Color.BLACK, Turn.L, 1)
+            .push(0, Color.BLACK, Color.BLACK, Turn.L, 1)
+            .push(1, Color.WHITE, Color.BLACK, Turn.R, 1)
+            .push(1, Color.BLACK, Color.WHITE, Turn.N, 0)
     }
 
 
     document.body.append(start_fibbo)
 
-    let MSEC = $create('input','msec')
-    MSEC.placeholder = 'One frame per x msec'
-    MSEC.value = 1;
 
+    let MSEC_ITEM = $create_item('msec','number',1)
+    let MSEC = MSEC_ITEM.input;
     
-    let SPEED = $create('input','speed')
-    SPEED.placeholder = 'Speed'
-    SPEED.value = 100;
-    let MAXSTEPS = $create('input','maxSteps')
+    let SPEED_ITEM = $create_item('speed','number',100)
+    let SPEED = SPEED_ITEM.input;
+
+    let MAXSTEPS_ITEM = $create_item('maxSteps','number')
+    let MAXSTEPS = MAXSTEPS_ITEM.input;
     MAXSTEPS.placeholder = 'Max Steps'
-    let Turmite_length = $create('input','Turmite Length')
+
+    let TURMITE_COLOR_ITEM = $create_item('Turmite Color', 'color','#FF0000');
+    TURMITE_COLOR_ITEM.input.style.width = '200px';
+    
+
+    let Turmite_length = $create('input', 'Turmite Length')
     Turmite_length.placeholder = 'Turmite Length >= 2'
     Turmite_length.value = 2;
-    let canvas_width = $create('input','Width')
+
+    let canvas_width = $create('input', 'Width')
     canvas_width.placeholder = 'Canvas Width'
     canvas_width.value = 500;
-    let canvas_height = $create('input','Height')
+
+    let canvas_height = $create('input', 'Height')
     canvas_height.placeholder = 'Canvas Height'
     canvas_height.value = 500;
-    let BACKGROUND = $create('input','background')
+
+    let max_turmites = $create('input', 'Max Turmites')
+    max_turmites.placeholder = 'Canvas Height'
+    max_turmites.value = 100;
+
+    let BACKGROUND = $create('input', 'background')
     BACKGROUND.type = 'color'
     BACKGROUND.style.width = '200px';
     BACKGROUND.value = '#FFFFFF';
+
     BACKGROUND.onchange = () => {
         g.setFillStyle(hexToRgb($v('background')));
         g.fillRect(0, 0, c.width, c.height);
@@ -448,22 +481,22 @@ function Main() {
     canvas_width.onchange = () => {
         c.width = canvas_width.value;
         c.c.width = canvas_width.value;
-        c.center.x = c.width/2;
+        c.center.x = c.width / 2;
     }
     canvas_height.onchange = () => {
         c.height = canvas_height.value;
         c.c.height = canvas_height.value;
-        c.center.y = c.h/2;
+        c.center.y = c.h / 2;
     }
 
 
-    
-    
-    document.body.append($create('br'),MSEC,'Milliseconds',$create('br'),SPEED,'Frames per Milliseconds',$create('br'),MAXSTEPS,'Max amount of steps',$create('br'),Turmite_length,'Length of Turmite',$create('br'),canvas_width,'Width of Canvas',$create('br'),canvas_height,'Height of Canvas',$create('br'),BACKGROUND,'Background Color',$create('br'))
-    
-    document.body.append(start,start_spiral,start_fibbo,start_brain,$create('br'))
 
-    let c = createCanvas(500,500);
+
+    document.body.append($create('br'), MSEC, 'Milliseconds', $create('br'), SPEED, 'Frames per Milliseconds', $create('br'), MAXSTEPS, 'Max amount of steps',$create('br'),TURMITE_COLOR_ITEM.input,'Turmite Color', $create('br'), Turmite_length, 'Length of Turmite', $create('br'), canvas_width, 'Width of Canvas', $create('br'), canvas_height, 'Height of Canvas', $create('br'), max_turmites, 'Maximal amount of Turmites', $create('br'), BACKGROUND, 'Background Color', $create('br'))
+
+    document.body.append(start, start_spiral, start_fibbo, start_brain, $create('br'))
+
+    let c = createCanvas(500, 500);
 
     document.body.append($create('br'))
     g = c.g;
@@ -481,24 +514,25 @@ function Main() {
     save_graph.innerHTML = 'Speichern'
     save_graph.onclick = () => {
         let link = $create('a');
-        link.download = `Turmite`
+        link.download = `Turmite `+ step + ' steps' + T[0].rules.toString();
         link.href = c.c.toDataURL()
         document.body.appendChild(link)
         link.click();
         delete link;
     }
-    
+
     /**Graph stop */
     const stop = $create('button')
     stop.innerHTML = 'Stop'
     stop.style.backgroundColor = 'red'
-    document.body.append(stop,save_graph);
+    document.body.append(stop, save_graph);
     stop.onclick = () => {
         clearInterval(x);
         x = setInterval(null);
     }
 
-
+    /**@type {Turmite[]} */
+    let T = [];
 
 
     const runCanvas = () => {
@@ -508,8 +542,8 @@ function Main() {
 
             if (step < maxSteps || !maxSteps) {
 
-                t.checkRule();
-                text_step.innerHTML = step + ' steps!';
+                T.forEach(e => e.checkRule());
+                text_step.innerHTML = step + ' steps!<br>' + T.length;
                 step++;
             }
         }
@@ -524,6 +558,10 @@ function Main() {
     const reset = () => {
         t = new Turmite(0, 0, Number($v('Turmite Length')));
 
+        t.color = $v('Turmite Color')
+
+        T = [t];
+
 
         msec = Number($v('msec'));
         speed = Number($v('speed'));
@@ -532,12 +570,12 @@ function Main() {
 
         c.width = Number($v('Width'))
         c.height = Number($v('Height'))
-        
+
         c.c.width = Number($v('Width'))
         c.c.height = Number($v('Height'))
 
-        c.center.x = c.width/2;
-        c.center.y = c.height/2;
+        c.center.x = c.width / 2;
+        c.center.y = c.height / 2;
 
         clearInterval(x);
         g.setFillStyle(hexToRgb($v('background')));
@@ -545,7 +583,7 @@ function Main() {
         t.x = 0;
         t.y = 0;
         t.dir = Direction.top;
-        t.onColor = Color.WHITE;
+        t.onColor = hexToRgb($v('background'));
         t.state = 0;
         step = 1;
         x = setInterval(runCanvas, msec);

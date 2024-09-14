@@ -1,4 +1,5 @@
 class RuleSet {
+    /**@type {Rule[]} */
     all = [];
 
     push = (state, color, newColor, turn, nextState) => {
@@ -6,5 +7,16 @@ class RuleSet {
         return this;
     };
     filter = (p) => this.all.filter(p);
+    /**
+     * 
+     * @param {(p:Rule) => void} p 
+     * @returns {Rule[]}
+     */
     forEach = (p) => this.all.forEach(p);
+
+    toString = () => {
+        let txt = ''
+        this.forEach(e => txt += '-{' + `${e.state},${e.color},${e.newColor},${e.turn},${e.nextState}` + '}');
+        return txt;
+    }
 }
