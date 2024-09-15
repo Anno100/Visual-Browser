@@ -52,6 +52,37 @@ const growingBrain = (msec, speed = 100, keyboard = false) => {
 
 function Main() {
 
+    
+$create_hidden_list('Turn',
+    {
+        displayValue: 'Turn Left',
+        value: 0
+    },
+    {
+        displayValue: 'Turn Right',
+        value: 1
+    },
+    {
+        displayValue: 'Turn 180°',
+        value: 2
+    },
+    {
+        displayValue: 'No Turn',
+        value: 3
+    },
+    {
+        displayValue: 'Move Backwards',
+        value: 4
+    },
+    {
+        displayValue: 'Generate new Termite (180°)',
+        value: 5
+    },
+    {
+        displayValue: 'Destroy itself',
+        value: 6
+    },);
+
 
 
     class Turmite extends Rect {
@@ -332,7 +363,8 @@ function Main() {
         $table_new_row(table)
     }
 
-    let table = $create_table('State:number', 'current Color:color', 'next Color:color', 'Turn:number', 'next State:number');
+    /**Regeln Tabelle */
+    let table = $create_table('State:number', 'current Color:color', 'next Color:color', 'Turn:select-Turn', 'next State:number');
     $table_new_row(table, 0, '#FFFFFF', '#000000', 0, 0)
     Rules.append(create_rule, table)
 
@@ -348,6 +380,7 @@ function Main() {
         $table_new_row(table2)
     }
 
+    /**States Tabelle */
     let table2 = $create_table('State Nr:number', 'description:text');
     $table_new_row(table2, 0)
     States.append(create_state, table2)
