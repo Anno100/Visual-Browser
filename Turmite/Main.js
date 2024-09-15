@@ -52,36 +52,44 @@ const growingBrain = (msec, speed = 100, keyboard = false) => {
 
 function Main() {
 
-    
-$create_hidden_list('Turn',
-    {
-        displayValue: 'Turn Left',
-        value: 0
-    },
-    {
-        displayValue: 'Turn Right',
-        value: 1
-    },
-    {
-        displayValue: 'Turn 180°',
-        value: 2
-    },
-    {
-        displayValue: 'No Turn',
-        value: 3
-    },
-    {
-        displayValue: 'Move Backwards',
-        value: 4
-    },
-    {
-        displayValue: 'Generate new Termite (180°)',
-        value: 5
-    },
-    {
-        displayValue: 'Destroy itself',
-        value: 6
-    },);
+
+    $create_hidden_list('Turn',
+        {
+            displayValue: '0 - Turn Left',
+            value: 0
+        },
+        {
+            displayValue: '1 - Turn Right',
+            value: 1
+        },
+        {
+            displayValue: '2 - Turn 180°',
+            value: 2
+        },
+        {
+            displayValue: '3 - No Turn',
+            value: 3
+        },
+        {
+            displayValue: '4 - Move Backwards',
+            value: 4
+        },
+        {
+            displayValue: '5 - Generate new Termite (180°)',
+            value: 5
+        },
+        {
+            displayValue: '6 - Destroy itself (not ready)',
+            value: 6
+        },
+        {
+            displayValue: '7 - Generate new Termite (right)',
+            value: 7
+        },
+        {
+            displayValue: '8 - Generate new Termite (left)',
+            value: 8
+        },);
 
 
 
@@ -327,6 +335,22 @@ $create_hidden_list('Turn',
                     case Turn.D:
                         T = T.filter(e => e != this);
                         break;
+                    case Turn.GR:
+                        let ttt = new Turmite(this.x, this.y, this.l)
+                        ttt.turnRight();
+                        ttt.rules = this.rules;
+                        ttt.color = t.color;
+                        if (T.length < Number($v('Max Turmites'))) T.push(ttt);
+                        break;
+
+                    case Turn.GL:
+                        let tttt = new Turmite(this.x, this.y, this.l)
+                        tttt.turnLeft();
+                        tttt.rules = this.rules;
+                        tttt.color = t.color;
+                        if (T.length < Number($v('Max Turmites'))) T.push(tttt);
+                        break;
+
 
 
 
@@ -387,7 +411,7 @@ $create_hidden_list('Turn',
 
 
 
-    document.body.append(Rules, 'Turn erlaubt die Werte 0 - 3. (0 -> Turn Left), (1 -> Turn Right), (2 -> Turn 180°), (3 -> no Turn),', $create('br'),  'EXTRA: (4 -> Move Backwards), (5 -> Generate new Turmite with same rules watching 180° from itself)', States)
+    document.body.append(Rules, 'Turn erlaubt die Werte 0 - 3. (0 -> Turn Left), (1 -> Turn Right), (2 -> Turn 180°), (3 -> no Turn),', $create('br'), 'EXTRA: (4 -> Move Backwards), (5 -> Generate new Turmite with same rules watching 180° from itself)', States)
 
     let text_step = $create('h1')
     document.body.append(text_step)
@@ -472,19 +496,19 @@ $create_hidden_list('Turn',
     document.body.append(start_fibbo)
 
 
-    let MSEC_ITEM = $create_item('msec','number',1)
+    let MSEC_ITEM = $create_item('msec', 'number', 1)
     let MSEC = MSEC_ITEM.input;
-    
-    let SPEED_ITEM = $create_item('speed','number',100)
+
+    let SPEED_ITEM = $create_item('speed', 'number', 100)
     let SPEED = SPEED_ITEM.input;
 
-    let MAXSTEPS_ITEM = $create_item('maxSteps','number')
+    let MAXSTEPS_ITEM = $create_item('maxSteps', 'number')
     let MAXSTEPS = MAXSTEPS_ITEM.input;
     MAXSTEPS.placeholder = 'Max Steps'
 
-    let TURMITE_COLOR_ITEM = $create_item('Turmite Color', 'color','#FF0000');
+    let TURMITE_COLOR_ITEM = $create_item('Turmite Color', 'color', '#FF0000');
     TURMITE_COLOR_ITEM.input.style.width = '200px';
-    
+
 
     let Turmite_length = $create('input', 'Turmite Length')
     Turmite_length.placeholder = 'Turmite Length >= 2'
@@ -525,7 +549,7 @@ $create_hidden_list('Turn',
 
 
 
-    document.body.append($create('br'), MSEC, 'Milliseconds', $create('br'), SPEED, 'Frames per Milliseconds', $create('br'), MAXSTEPS, 'Max amount of steps',$create('br'),TURMITE_COLOR_ITEM.input,'Turmite Color', $create('br'), Turmite_length, 'Length of Turmite', $create('br'), canvas_width, 'Width of Canvas', $create('br'), canvas_height, 'Height of Canvas', $create('br'), max_turmites, 'Maximal amount of Turmites', $create('br'), BACKGROUND, 'Background Color', $create('br'))
+    document.body.append($create('br'), MSEC, 'Milliseconds', $create('br'), SPEED, 'Frames per Milliseconds', $create('br'), MAXSTEPS, 'Max amount of steps', $create('br'), TURMITE_COLOR_ITEM.input, 'Turmite Color', $create('br'), Turmite_length, 'Length of Turmite', $create('br'), canvas_width, 'Width of Canvas', $create('br'), canvas_height, 'Height of Canvas', $create('br'), max_turmites, 'Maximal amount of Turmites', $create('br'), BACKGROUND, 'Background Color', $create('br'))
 
     document.body.append(start, start_spiral, start_fibbo, start_brain, $create('br'))
 
@@ -547,7 +571,7 @@ $create_hidden_list('Turn',
     save_graph.innerHTML = 'Speichern'
     save_graph.onclick = () => {
         let link = $create('a');
-        link.download = `Turmite `+ step + ' steps' + T[0].rules.toString();
+        link.download = `Turmite ` + step + ' steps' + T[0].rules.toString();
         link.href = c.c.toDataURL()
         document.body.appendChild(link)
         link.click();

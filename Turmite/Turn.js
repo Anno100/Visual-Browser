@@ -12,8 +12,12 @@ class Turn {
     static N = 3;
     /**Move Backwards */
     static B = 4;
-    /**Generate new Termite */
+    /**Generate new Termite 180° */
     static G = 5;
     /**Destroy itself */
     static D = 6;
+    /**Generate new Termite right */
+    static GR = 7;
+    /**Generate new Termite left */
+    static GL = 8;
 }
