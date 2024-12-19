@@ -1,37 +1,159 @@
 <!DOCTYPE html>
-<html lang='en'>
-
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Home</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Räuber Beute</title>
     <style>
-        .input_number {
-            display: flex;
-            flex-direction: column;
-        }
+      :root {
+        font-family: Arial, Helvetica, sans-serif;
+      }
 
-        body{
-            flex-direction: row;
-            width: 100%;
+      input:read-only{
+        background-color: black;
+        color:white;
+      }
 
-        }
+      .button_plus {
+        width: 30px;
+        background-color: red;
+      }
 
-        .row {
-            display: flex;
-            width: 100%;
-        }
+      #Applikation {
+        display: grid;
+        grid-template-columns: auto;
+      }
 
-        canvas{
-            background-color: transparent;
-        }
+      #Wesen,
+      #Beziehung {
+        border-style: solid;
+        border-color: black;
+        display: flex;
+        flex-direction: row;
+        min-width: auto;
+        height: auto;
+      }
+      #Wesen_Input > label,
+      #Beziehung_Input > label {
+        width: 200px;
+      }
+      #Wesen_Input > input,
+      #Beziehung_Input > input {
+        width: 200px;
+      }
+
+      #Wesen_Grid {
+        color: black;
+        background-color: white;
+        display: grid;
+        grid-template-columns: auto auto auto auto auto auto;
+        margin-left: 10px;
+      }
+      #Beziehung_Grid {
+        color: black;
+        background-color: white;
+        display: grid;
+        grid-template-columns: auto auto;
+        margin-left: 10px;
+      }
+
+      #Wesen_Grid > input,
+      #Beziehung_Grid > input,
+      el {
+        border-style: solid;
+        border-color: black;
+        text-align: center;
+        height: 20px;
+        width: 200px;
+      }
+
+      el {
+        background-color: red;
+        color: white;
+      }
+
+      #Wesen_Grid > input:hover:nth-child(n + 6) {
+        background-color: rgba(97, 122, 197, 0.9);
+      }
+      #Beziehung_Grid > input:hover:nth-child(n + 3) {
+        background-color: rgba(97, 122, 197, 0.9);
+      }
+
     </style>
-</head>
+  </head>
 
-<body>
-    <h1>Generator für Trajektor und Graphen</h1>
-    <script src='../lib/Boot.js'>
+  <body>
+    <div id="Applikation">
+      <h2>Lebewesen erstellen</h2>
+      <div id="Wesen">
+        <button class="button_plus" onclick="createWesen()">+</button>
+        <div id="Wesen_Input">
+          <label for="Wesen_Name">Name(optional):</label><br />
+          <input type="text" name="Wesen_Name" id="Wesen_Name" /><br />
+          <label for="Wesen_Anzahl">Anzahl:</label><br />
+          <input type="number" name="Wesen_Anzahl" id="Wesen_Anzahl" /><br />
+          <label for="Wesen_Name">Geburtenrate:</label><br />
+          <input
+            type="number"
+            name="Wesen_Geburtenrate"
+            id="Wesen_Geburtenrate"
+          /><br />
+          <label for="Wesen_Sterberate">Sterberate:</label><br />
+          <input
+            type="number"
+            name="Wesen_Sterberate"
+            id="Wesen_Sterberate"
+          /><br />
+          <label for="Wesen_Farbe">Farbe:</label><br />
+          <input type="color" name="Wesen_Farbe" id="Wesen_Farbe" />
+        </div>
+        <div id="Wesen_Grid">
+          <el>id</el>
+          <el>Name</el>
+          <el>Anzahl</el>
+          <el>Geburtenrate</el>
+          <el>Sterberate</el>
+          <el>Farbe</el>
+        </div>
+      </div>
+      <h2>Beziehung erstellen</h2>
+      <div id="Beziehung">
+        <button class="button_plus" onclick="createBeziehung()">+</button>
+        <div id="Beziehung_Input">
+          <label for="Beziehung_Räuber">Räuber id:</label><br />
+          <input
+            type="text"
+            list="Wesen_Liste"
+            name="Beziehung_Räuber"
+            id="Beziehung_Räuber"
+          /><br />
+          <label for="Beziehung_Beute">Beute id:</label><br />
+          <input
+            type="text"
+            list="Wesen_Liste"
+            name="Beziehung_Beute"
+            id="Beziehung_Beute"
+          />
+        </div>
+        <div id="Beziehung_Grid">
+          <el>Räuber id</el>
+          <el>Beute id</el>
+        </div>
+      </div>
+      <button onclick="generate()">Graph erstellen</button>
+    </div>
+
+    <datalist id="Wesen_Liste"></datalist>
+
+    <script>
+      IMPORT = true;
     </script>
-</body>
-
+    <script src="../lib/Boot.js"></script>
+    <script src="Wesen.js"></script>
+    <script src="Raeuber.js"></script>
+    <script src="Beute.js"></script>
+    <script src="Beziehung_Raeuber_Beute.js"></script>
+    <script src="Version.js"></script>
+    <script src="pre.js"></script>
+  </body>
 </html>
